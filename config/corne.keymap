@@ -25,16 +25,16 @@
         default_layer {
             display-name = "BAS";
             // -----------------------------------------------------------------------------------------
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
-            // | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
-            // | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
-            //                    | GUI | LWR | ENT |   | SPC | RSE  | ALT |
+            // |  ESC |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
+            // | SHFT |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
+            // | CTRL |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | GUI  |
+            //                    | TAB | LWR | ENT |   | SPC | RSE  | ALT |
 
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O    &kp P     &kp BSPC
-&kp LCTRL  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
-&kp LSHFT  &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp ESC
-                         &kp LGUI  &mo 1  &kp RET    &kp SPACE  &mo 2  &kp RALT
+&kp ESC    &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O    &kp P     &kp BSPC
+&kp LSHFT  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
+&kp LCTRL  &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp LGUI
+                         &kp TAB  &mo 1  &kp RET    &kp SPACE  &mo 2  &kp RALT
             >;
         };
 
@@ -42,14 +42,14 @@
             display-name = "LOW";
             // -----------------------------------------------------------------------------------------
             // |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
-            // | LCTRL| BTCLR | BT0 | BT1 | BT2 | BT3 |   | LFT | DWN |  UP | RGT |     |      |
-            // | ESC  |       | HOME| PGUP| PGDN| END |   |     |     |     |     |     |      |
+            // | LCTRL| BTCLR | BT0 | BT1 | BT2 | BT3 |   |     |     |  UP |     |     |      |
+            // | ESC  |       | HOME| PGUP| PGDN| END |   |     | LFT | DWN | RGT |     |      |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
 &kp TAB     &kp N1        &kp N2        &kp N3        &kp N4        &kp N5          &kp N6    &kp N7    &kp N8    &kp N9     &kp N0  &kp BSPC
-&kp LCTRL  &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3    &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &trans  &trans
-&kp ESC  &trans    &kp HOME       &kp PG_UP       &kp PG_DN       &kp END         &trans   &trans   &trans &trans    &trans &trans
+&kp LCTRL  &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3    &trans  &trans &kp UP    &trans  &trans  &trans
+&kp ESC  &trans    &kp HOME       &kp PG_UP       &kp PG_DN       &kp END         &trans    &kp LEFT   &kp DOWN   &kp RIGHT    &trans &trans
                                         &kp LGUI      &trans        &kp SPACE       &kp RET   &trans    &kp RALT
             >;
         };
