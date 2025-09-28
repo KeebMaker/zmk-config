@@ -15,7 +15,7 @@ layers:
   - '9'
   - '0'
   - $$mdi:backspace-outline$$
-  - Ctrl
+  - $$mdi:apple-keyboard-control$$
   - BT CLR
   - BT 1
   - BT 2
