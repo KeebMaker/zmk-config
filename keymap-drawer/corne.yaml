@@ -17,7 +17,7 @@ layers:
   - A
   - S
   - D
-  - F
+  - {t: F, h: RAI}
   - G
   - H
   - J
@@ -44,88 +44,88 @@ layers:
   - {t: '$$mdi:backspace-outline$$', h: '$$mdi:apple-keyboard-control$$'}
   - RWIN
   LOW:
-  - ↹
-  - '1'
-  - '2'
-  - '3'
-  - '4'
-  - '5'
-  - '6'
-  - '7'
-  - '8'
-  - '9'
-  - '0'
-  - $$mdi:backspace-outline$$
-  - $$mdi:apple-keyboard-control$$
+  - '&studio_unlock'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Home
+  - ↑
+  - End
+  - Sft+[
+  - {t: ▽, type: trans}
+  - Reset
   - BT CLR
   - BT 1
   - BT 2
   - BT 3
   - BT 4
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - ↑
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - Esc
-  - {t: ▽, type: trans}
-  - Home
-  - Page Up
-  - Page Down
-  - End
-  - {t: ▽, type: trans}
   - ←
   - ↓
   - →
+  - Sft+]
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - $$mdi:apple-keyboard-command$$
+  - {t: '$$mdi:led-on$$', h: '$$mdi:toggle-switch$$', s: '$$mdi:led-outline$$', type: toggle}
+  - {t: '$$mdi:led-on$$', h: '$$mdi:page-previous-outline$$', type: tap_dance}
+  - {t: '$$mdi:led-on$$', s: '$$tabler:brightness-up$$', type: sym_by_sym}
+  - {t: '$$mdi:led-outline$$', s: '$$tabler:brightness-down$$', type: sym_by_sym}
   - {t: ▽, type: trans}
-  - {t: ␣, type: held}
-  - ⏎
   - {t: ▽, type: trans}
-  - $$mdi:apple-keyboard-option$$
+  - (
+  - )
+  - '['
+  - ']'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   RAI:
-  - ↹
+  - {t: ▽, type: trans}
+  - '`'
+  - '%'
+  - '|'
+  - AMPS
+  - '='
+  - {t: ▽, type: trans}
+  - '7'
+  - '8'
+  - '9'
+  - F1
+  - F2
+  - {t: ▽, type: trans}
   - '!'
   - '@'
   - '#'
-  - $
-  - '%'
-  - ^
-  - AMPS
-  - KP MULTIPLY
-  - (
-  - )
-  - $$mdi:backspace-outline$$
-  - $$mdi:apple-keyboard-control$$
-  - {t: '$$mdi:led-on$$', h: '$$mdi:toggle-switch$$', s: '$$mdi:led-outline$$', type: toggle}
-  - {t: '$$mdi:led-on$$', s: '$$mdi:palette$$', type: sym_by_sym}
-  - {t: '$$mdi:led-outline$$', s: '$$mdi:eyedropper$$', type: sym_by_sym}
-  - {t: '$$mdi:led-outline$$', s: '$$tabler:brightness-down$$', type: sym_by_sym}
+  - {t: $, type: held}
+  - Sft+.
   - {t: ▽, type: trans}
+  - '4'
+  - '5'
+  - '6'
+  - F3
+  - F4
+  - {t: ▽, type: trans}
+  - ^
+  - '*'
+  - Sft+-
+  - Sft+=
   - '-'
-  - '='
-  - '['
-  - ']'
-  - \
-  - '`'
-  - $$mdi:apple-keyboard-shift$$
-  - {t: '$$mdi:led-on$$', h: '$$mdi:page-previous-outline$$', type: tap_dance}
-  - {t: '$$mdi:led-outline$$', s: '$$mdi:palette$$', type: sym_by_sym}
-  - {t: '$$mdi:led-on$$', s: '$$mdi:eyedropper$$', type: sym_by_sym}
-  - {t: '$$mdi:led-on$$', s: '$$tabler:brightness-up$$', type: sym_by_sym}
-  - Boot
-  - _
-  - +
-  - '{'
-  - '}'
-  - '|'
-  - '~'
-  - $$mdi:apple-keyboard-command$$
-  - '&studio_unlock'
-  - ␣
-  - {t: ⏎, type: held}
-  - '&studio_unlock'
-  - $$mdi:apple-keyboard-option$$
+  - {t: ▽, type: trans}
+  - '1'
+  - '2'
+  - '3'
+  - F5
+  - F6
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - ⏎
+  - '0'
+  - {t: ▽, type: trans}
