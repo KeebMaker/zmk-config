@@ -32,7 +32,7 @@
 
             bindings = <
 &kp ESC    &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O    &kp P     &kp DEL
-&kp LSHFT  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
+&kp LSHFT  &kp A  &kp S  &kp D     &lt 2 F  &kp G        &kp H    &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LALT  &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp BSLH
                          &kp LWIN   &mt LCTRL TAB  &lt 1 RET    &lt 2 SPACE  &mt RCTRL BSPC  &kp RWIN
             >;
@@ -41,16 +41,16 @@
         lower_layer {
             display-name = "LOW";
             // -----------------------------------------------------------------------------------------
-            // |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
+            // |  TAB |  1  |  2  |  3  |  4  |  5  |     |  6  |  7  |  8  |  9  |  0  | BKSP |
             // | LCTRL| BTCLR | BT0 | BT1 | BT2 | BT3 |   |     |     |  UP |     |     |      |
             // | ESC  |       | HOME| PGUP| PGDN| END |   |     | LFT | DWN | RGT |     |      |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
-&kp TAB     &kp N1        &kp N2        &kp N3        &kp N4        &kp N5          &kp N6    &kp N7    &kp N8    &kp N9     &kp N0  &kp BSPC
-&kp LCTRL  &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3    &trans  &trans &kp UP    &trans  &trans  &trans
-&kp ESC  &trans    &kp HOME       &kp PG_UP       &kp PG_DN       &kp END         &trans    &kp LEFT   &kp DOWN   &kp RIGHT    &trans &trans
-                                        &kp LGUI      &trans        &kp SPACE       &kp RET   &trans    &kp RALT
+&studio_unlock     &trans        &trans        &trans        &trans        &trans                           &trans    &trans    &trans    &trans     &trans  &trans
+&trans  &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3                          &trans  &trans &kp UP    &trans  &trans  &trans
+&trans  &rgb_ug  RGB_TOG    &rgb_ug RGB_EFF       &rgb_ug RGB_BRD       &rgb_ug RGB_BRI  &trans     &trans    &kp LEFT   &kp DOWN   &kp RIGHT    &trans &trans
+                                        &trans      &trans        &trans                            &trans   &trans    &trans
             >;
         };
 
@@ -63,10 +63,10 @@
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
-&kp TAB    &kp EXCL  &kp AT  &kp HASH   &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
-&kp LCTRL &rgb_ug  RGB_TOG   &rgb_ug RGB_HUI &rgb_ug RGB_SAI   &rgb_ug RGB_BRI   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-&kp LSHFT &rgb_ug RGB_EFF   &rgb_ug RGB_HUD &rgb_ug RGB_SAD   &rgb_ug RGB_BRD   &bootloader      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                             &kp LGUI   &studio_unlock    &kp SPACE    &kp RET    &studio_unlock     &kp RALT
+&trans    &kp GRAVE  &kp PRCNT  &kp PIPE   &kp AMPS  &kp EQUAL                  &trans  &kp N7  &kp N8  &kp N9  &kp F1  &kp F2
+&trans &kp EXCL   &kp AT &kp HASH   &kp DLLR   &kp LS(DOT)                      &trans  &kp N4  &kp N5  &kp N6  &kp F3 &kp F4
+&trans &kp CARET   &kp ASTRK &kp LS(MINUS)   &kp LS(EQUAL)  &kp MINUS           &trans  &kp N1  &kp N2  &kp N3  &kp F5 &kp F6
+                             &trans   &trans    &trans                          &kp RET    &kp N0     &trans
             >;
         };
         extra_1 {
