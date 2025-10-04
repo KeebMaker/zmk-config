@@ -29,7 +29,7 @@ layers:
   - A
   - S
   - D
-  - F
+  - {t: F, h: RAI}
   - G
   - H
   - J
@@ -151,7 +151,7 @@ layers:
   - '!'
   - '@'
   - '#'
-  - $
+  - {t: $, type: held}
   - Sft+.
   - {t: ▽, type: trans}
   - '4'
@@ -178,7 +178,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ⏎, type: held}
+  - ⏎
   - '0'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
