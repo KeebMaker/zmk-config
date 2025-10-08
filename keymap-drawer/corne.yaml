@@ -13,7 +13,7 @@ layers:
   - O
   - P
   - ⌦
-  - $$mdi:apple-keyboard-shift$$
+  - {t: ↹, h: '$$mdi:apple-keyboard-shift$$'}
   - A
   - S
   - D
@@ -24,7 +24,7 @@ layers:
   - K
   - L
   - ;
-  - ''''
+  - {t: '''', h: '$$mdi:apple-keyboard-shift$$'}
   - $$mdi:apple-keyboard-option$$
   - Z
   - X
