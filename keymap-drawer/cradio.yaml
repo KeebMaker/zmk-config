@@ -20,8 +20,8 @@ layers:
   - J
   - K
   - L
-  - {t: '''', h: SHFT}
-  - {t: Z, h: ALT}
+  - {t: '''', h: '$$mdi:apple-keyboard-shift$$'}
+  - {t: Z, h: '$$mdi:apple-keyboard-option$$'}
   - X
   - C
   - V
@@ -32,7 +32,7 @@ layers:
   - .
   - /
   - {t: ↹, h: '$$mdi:apple-keyboard-control$$'}
-  - {t: ENTER, h: right}
+  - {t: ⏎, h: right}
   - {t: ␣, h: left}
   - {t: '$$mdi:backspace-outline$$', h: '$$mdi:apple-keyboard-control$$'}
   right:
