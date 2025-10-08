@@ -14,7 +14,7 @@ layers:
   - {t: A, h: '$$mdi:apple-keyboard-shift$$'}
   - S
   - D
-  - F
+  - {t: F, h: left}
   - G
   - H
   - J
@@ -84,7 +84,7 @@ layers:
   - '!'
   - '@'
   - '#'
-  - $
+  - {t: $, type: held}
   - Sft+.
   - F2
   - '4'
@@ -103,5 +103,5 @@ layers:
   - F6
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
-  - {t: ▽, type: trans}
+  - ⏎
+  - '0'
