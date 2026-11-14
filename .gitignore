@@ -89,3 +89,6 @@ __pycache__
 # Rust
 target/
 **/*.rs.bk
+
+# Datos personales del keymap (no subir)
+config/personal.dtsi

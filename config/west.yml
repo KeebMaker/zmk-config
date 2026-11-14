@@ -11,6 +11,9 @@ manifest:
     # fork of zmk-nice-oled with custom KM medal animation
     - name: KeebMaker
       url-base: https://github.com/KeebMaker
+    # tri-state (swapper Cmd+Tab)
+    - name: urob
+      url-base: https://github.com/urob
   projects:
     # Pinned to v0.3.0 instead of `main`: ZMK main tracks Zephyr 4.1, whose
     # board-model rewrite renamed `nice_nano_v2` (now `nice_nano//zmk`) and
@@ -36,5 +39,9 @@ manifest:
     - name: zmk-oled-adapter
       remote: mctechnology17
       revision: main
+    # swapper Cmd+Tab (debe coincidir con la versión de ZMK)
+    - name: zmk-tri-state
+      remote: urob
+      revision: v0.3
   self:
     path: config

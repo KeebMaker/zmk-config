@@ -1,15 +1,18 @@
-// Copyright @filterpaper
-// SPDX-License-Identifier: MIT
+// Sweep (Ferris 34 teclas) — Dvorak. Fuente: ~/keybords/dvorack-sweep.txt
+// Atajos de Mac (Cmd = GUI).
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 
-#define CMK 1
-#define NUM 2
-#define SYM 3
-#define FNC 4
+#define BASE  0
+#define NUM   1
+#define SYM   2
+#define TERM  3
+#define NAV   4
+#define TRACK 5
+#define IDE   6   // última: se activa desde NUM y debe quedar por encima
 
 #define TAPPING_TERM 210
 #define SHIFT_TAP_MS 180
@@ -31,11 +34,14 @@
     continue-list = <UNDER MINUS BSPC LSHFT RSHFT LS(SPACE) RS(SPACE)>;
 };
 
-
+/* Posiciones
+ 0  1  2  3  4   5  6  7  8  9
+10 11 12 13 14  15 16 17 18 19
+20 21 22 23 24  25 26 27 28 29
+         30 31  32 33 */
 
 #define HOLD_TAP(name, tap_flavor, tap_term, ...) \
 name: name##_hold_tap {                       \
-    label           = #name;                  \
     flavor          = #tap_flavor;            \
     compatible      = "zmk,behavior-hold-tap";\
     tapping-term-ms = <tap_term>;             \
@@ -51,39 +57,35 @@ name: name##_hold_tap {                       \
 
 / {
     behaviors {
-        HOLD_TAP(st, tap-preferred, SHIFT_TAP_MS)
-        HOLD_TAP(ht, tap-preferred, TAPPING_TERM, require-prior-idle-ms = <150>;)
-        // Positional hold-tap for non-Shift modifiers
+        // Home row mods posicionales (solo se activan con tecla de la otra mano)
         HOLD_TAP(lmt, tap-preferred, TAPPING_TERM, require-prior-idle-ms = <150>; hold-trigger-key-positions = <L_SHIFT R_KEYS>;)
         HOLD_TAP(rmt, tap-preferred, TAPPING_TERM, require-prior-idle-ms = <150>; hold-trigger-key-positions = <R_SHIFT L_KEYS>;)
-        // Positional hold-tap for Shift
         HOLD_TAP(lst, balanced, SHIFT_TAP_MS, hold-trigger-key-positions = <R_KEYS>;)
         HOLD_TAP(rst, balanced, SHIFT_TAP_MS, hold-trigger-key-positions = <L_KEYS>;)
-        COMBO(layer5, &mo 5, 31 33)
+
+        // Cmd on/off explícitos (el &kt "flip" se desincronizaba y dejaba Cmd pegado)
+        kt_on:  kt_on  { compatible = "zmk,behavior-key-toggle"; #binding-cells = <1>; toggle-mode = "on"; };
+        kt_off: kt_off { compatible = "zmk,behavior-key-toggle"; #binding-cells = <1>; toggle-mode = "off"; };
+        // ⌘+Tab que deja Cmd apretado: cada toque avanza; Cmd se suelta al soltar
+        // Espacio (NUM) o al tocar otra tecla. Sin límite de tiempo.
+        swap: swapper {
+            compatible = "zmk,behavior-tri-state";
+            #binding-cells = <0>;
+            bindings = <&kt_on LGUI>, <&kp TAB>, <&kt_off LGUI>;
+        };
+        // tap: swapper, hold: capa IDE
+        cmdtab: cmdtab_hold_tap {
+            compatible      = "zmk,behavior-hold-tap";
+            flavor          = "hold-preferred";
+            tapping-term-ms = <TAPPING_TERM>;
+            #binding-cells  = <2>;
+            bindings        = <&mo>, <&swap>;
+        };
     };
 };
 
-
-
-#define COMBO(name, kp, pos) \
-combo_##name {               \
-    timeout-ms    = <30>;    \
-    bindings      = <kp>;    \
-    key-positions = <pos>;   \
-    layers        = <0 1>;   \
-};
-/* Key positions
- 0  1  2  3  4   5  6  7  8  9
-10 11 12 13 14  15 16 17 18 19
-20 21 22 23 24  25 26 27 28 29
-         30 31  32 33 */
-
-
-
-
 #define MACRO(name, keys)                 \
 name: name##_macro {                      \
-    label          = #name;               \
     compatible     = "zmk,behavior-macro";\
     tap-ms         = <1>;                 \
     wait-ms        = <1>;                 \
@@ -91,195 +93,162 @@ name: name##_macro {                      \
     bindings       = <keys>;              \
 };
 
-
 / {
     macros {
-        MACRO(vim_q,        &kp COLON &kp Q &kp EXCL)
-        MACRO(vim_s,        &kp COLON &kp X)
-        MACRO(dir_up,       &kp DOT &kp DOT &kp FSLH)
-        MACRO(git_clone,    &kp G &kp I &kp T &kp SPACE &kp C &kp L &kp O &kp N &kp E &kp SPACE)
-        MACRO(git_checkout, &kp G &kp I &kp T &kp SPACE &kp C &kp H &kp E &kp C &kp K &kp O &kp U &kp T &kp SPACE &kp MINUS &kp B)
-        MACRO(git_push,     &kp G &kp I &kp T &kp SPACE &kp P &kp U &kp S &kp H &kp SPACE &kp MINUS &kp U &kp SPACE &kp O &kp R &kp I &kp G &kp I &kp N &kp SPACE)
-        MACRO(git_commit,   &kp G &kp I &kp T &kp SPACE &kp C &kp O &kp M &kp M &kp I &kp T &kp SPACE &kp MINUS &kp M &kp SPACE &kp DQT)
-        MACRO(git_branch,   &kp G &kp I &kp T &kp SPACE &kp B &kp R &kp A &kp N &kp C &kp H &kp SPACE)
-        MACRO(git_diff,     &kp G &kp I &kp T &kp SPACE &kp D &kp I &kp F &kp F)
-        MACRO(git_status,   &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp T &kp U &kp S)
-        MACRO(git_diff_s,   &kp G &kp I &kp T &kp SPACE &kp D &kp I &kp F &kp F &kp SPACE &kp MINUS &kp MINUS &kp S &kp T &kp A &kp G &kp E &kp D)
-        MACRO(git_add,      &kp G &kp I &kp T &kp SPACE &kp A &kp D &kp D &kp SPACE &kp MINUS &kp LS(A))
-        MACRO(git_log,      &kp G &kp I &kp T &kp SPACE &kp L &kp O &kp G &kp SPACE &kp MINUS &kp MINUS &kp S &kp T &kp A &kp T)
-        MACRO(git_graph,    &kp G &kp I &kp T &kp SPACE &kp L &kp O &kp G &kp SPACE &kp MINUS &kp MINUS &kp O &kp N &kp E &kp L &kp I &kp N &kp E &kp SPACE &kp MINUS &kp MINUS &kp G &kp R &kp A &kp P &kp H &kp SPACE &kp MINUS &kp MINUS &kp A &kp L &kp L)
-        MACRO(git_pull,     &kp G &kp I &kp T &kp SPACE &kp P &kp U &kp L &kp L &kp SPACE &kp O &kp R &kp I &kp G &kp I &kp N &kp SPACE)
-        MACRO(git_merge,    &kp G &kp I &kp T &kp SPACE &kp M &kp E &kp R &kp G &kp E)
-        MACRO(git_fetch,    &kp G &kp I &kp T &kp SPACE &kp F &kp E &kp T &kp C &kp H)
-        MACRO(git_s,        &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp DQT &kp DQT)
-        MACRO(git_s_list,   &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp L &kp I &kp S &kp T)
-        MACRO(git_s_apply,  &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp A &kp P &kp P &kp L &kp Y &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp AT &kp LBRC &kp RBRC)
-        MACRO(git_s_branch, &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp B &kp R &kp A &kp N &kp C &kp H &kp SPACE &kp F &kp E &kp A &kp T &kp U &kp R &kp E &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp AT &kp LBRC &kp RBRC)
-        MACRO(git_show_diff, &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp S &kp H &kp O &kp W &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp AT &kp LBRC &kp RBRC &kp SPACE &kp MINUS &kp P)
-        MACRO(git_stsh, &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp P &kp U &kp S &kp H &kp SPACE &kp MINUS &kp M &kp SPACE &kp DQT)
-
-        MACRO(null_blank,
-            &kp I &kp F &kp SPACE
-            &kp LS(N9)
-            &kp O &kp B &kp J &kp SPACE
-            &kp EQUAL &kp EQUAL &kp SPACE
-            &kp N &kp U &kp L &kp L &kp SPACE
-            &kp PIPE &kp PIPE &kp SPACE
-            &kp O &kp B &kp J
-            &kp DOT
-            &kp I &kp S
-            &kp B &kp L &kp A &kp N &kp K
-            &kp LS(N9) &kp LS(N0)
-            &kp LS(N0)
-            &kp SPACE
-            &kp LBRC
-            &kp ENTER
-            &kp SPACE &kp SPACE &kp SPACE &kp SPACE
-            &kp R &kp E &kp T &kp U &kp R &kp N
-            &kp SPACE
-            &kp N &kp U &kp L &kp L
-            &kp SEMI
-            &kp ENTER
-            &kp RBRC
-        )
-
-        MACRO(search,       &kp LG(LS(F)))
-        MACRO(search_c,     &kp LG(LS(O)))
-        MACRO(junit_all,    &kp LC(LS(R)))
-        MACRO(refactor,     &kp LS(F6))
-        MACRO(duplicate,    &kp LG(D))
-        MACRO(resume_debug, &kp LC(LA(R)))
-        MACRO(select_opened_file, &kp LA(F1))
-        MACRO(ls,           &kp L &kp S &kp SPACE &kp MINUS &kp MINUS &kp C &kp O &kp L &kp O &kp R &kp EQUAL &kp A &kp U &kp T &kp O)
-        MACRO(pwd,          &kp P &kp W &kp D)
-        MACRO(mkdir,        &kp M &kp K &kp D &kp I &kp R &kp SPACE)
-        MACRO(touch,        &kp T &kp O &kp U &kp C &kp H &kp SPACE)
-        MACRO(rm_rf,        &kp R &kp M &kp SPACE &kp MINUS &kp R &kp MINUS &kp F &kp SPACE)
-        MACRO(grep,         &kp G &kp R &kp E &kp P &kp SPACE)
-        MACRO(cat,          &kp C &kp A &kp T &kp SPACE)
-        MACRO(tail_n,       &kp T &kp A &kp I &kp L &kp SPACE &kp MINUS &kp N &kp SPACE)
-        MACRO(cd,           &kp C &kp D &kp SPACE)
-        MACRO(mv,           &kp M &kp V &kp SPACE)
-        MACRO(cpr,          &kp C &kp P &kp SPACE &kp MINUS &kp R &kp SPACE)
-        MACRO(screan,       &kp LG(LS(N3)))
-
-        MACRO(cmd_lb, &kp LG(LBRC))
-        MACRO(cmd_rb, &kp LG(RBRC))
-        MACRO(recent_files, &kp LG(LS(E)))
-
-        MACRO(class_hierarchy, &kp LA(H)) 
-        MACRO(generate_code, &kp LG(N))  // Cmd+N (Mac)
-        MACRO(alt_cmd_r, &kp LA(LG(R)))
-        MACRO(show_usages, &kp LG(LA(F7)))
-        MACRO(stop, &kp LG(F2))
-        MACRO(debug_continue, &kp F8)
-        MACRO(debu_resumen, &kp LG(LA(R)))
-        MACRO(copilot_chat, &kp LC(LS(C)))
-        MACRO(bookmarks, &kp LG(N2))
-        MACRO(screan_s, &kp (LGUI | LSHIFT | N4))
-        MACRO(gradle, &kp LC(Z))
-        MACRO(p_view, &kp LG(N1))
+        MACRO(git_clone,     &kp G &kp I &kp T &kp SPACE &kp C &kp L &kp O &kp N &kp E &kp SPACE)
+        MACRO(git_checkout,  &kp G &kp I &kp T &kp SPACE &kp C &kp H &kp E &kp C &kp K &kp O &kp U &kp T &kp SPACE &kp MINUS &kp B)
+        MACRO(git_branch,    &kp G &kp I &kp T &kp SPACE &kp B &kp R &kp A &kp N &kp C &kp H &kp SPACE)
+        MACRO(git_diff,      &kp G &kp I &kp T &kp SPACE &kp D &kp I &kp F &kp F)
+        MACRO(git_diff_s,    &kp G &kp I &kp T &kp SPACE &kp D &kp I &kp F &kp F &kp SPACE &kp MINUS &kp MINUS &kp S &kp T &kp A &kp G &kp E &kp D)
+        MACRO(git_status,    &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp T &kp U &kp S)
+        MACRO(git_add,       &kp G &kp I &kp T &kp SPACE &kp A &kp D &kp D &kp SPACE &kp MINUS &kp LS(A))
+        MACRO(git_commit,    &kp G &kp I &kp T &kp SPACE &kp C &kp O &kp M &kp M &kp I &kp T &kp SPACE &kp MINUS &kp M &kp SPACE &kp DQT)
+        MACRO(git_push,      &kp G &kp I &kp T &kp SPACE &kp P &kp U &kp S &kp H &kp SPACE &kp MINUS &kp U &kp SPACE &kp O &kp R &kp I &kp G &kp I &kp N &kp SPACE)
+        MACRO(git_log,       &kp G &kp I &kp T &kp SPACE &kp L &kp O &kp G &kp SPACE &kp MINUS &kp MINUS &kp S &kp T &kp A &kp T)
+        MACRO(git_pull,      &kp G &kp I &kp T &kp SPACE &kp P &kp U &kp L &kp L &kp SPACE &kp O &kp R &kp I &kp G &kp I &kp N &kp SPACE)
+        MACRO(git_s,         &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp DQT &kp DQT)
+        MACRO(git_s_list,    &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp L &kp I &kp S &kp T)
+        MACRO(git_s_apply,   &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp A &kp P &kp P &kp L &kp Y &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp AT &kp LBRC &kp RBRC)
+        MACRO(git_graph,     &kp G &kp I &kp T &kp SPACE &kp L &kp O &kp G &kp SPACE &kp MINUS &kp MINUS &kp O &kp N &kp E &kp L &kp I &kp N &kp E &kp SPACE &kp MINUS &kp MINUS &kp G &kp R &kp A &kp P &kp H &kp SPACE &kp MINUS &kp MINUS &kp A &kp L &kp L)
+        MACRO(git_s_show,    &kp G &kp I &kp T &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp SPACE &kp S &kp H &kp O &kp W &kp SPACE &kp S &kp T &kp A &kp S &kp H &kp AT &kp LBRC &kp RBRC &kp SPACE &kp MINUS &kp P)
+        MACRO(ls,            &kp L &kp S &kp SPACE &kp MINUS &kp MINUS &kp C &kp O &kp L &kp O &kp R &kp EQUAL &kp A &kp U &kp T &kp O)
+        MACRO(touch,         &kp T &kp O &kp U &kp C &kp H &kp SPACE)
+        MACRO(grep,          &kp G &kp R &kp E &kp P &kp SPACE)
+        MACRO(rm_rf,         &kp R &kp M &kp SPACE &kp MINUS &kp R &kp F &kp SPACE)
+        MACRO(mkdir,         &kp M &kp K &kp D &kp I &kp R &kp SPACE)
+        MACRO(tail_n,        &kp T &kp A &kp I &kp L &kp SPACE &kp MINUS &kp N &kp SPACE)
+        MACRO(cat,           &kp C &kp A &kp T &kp SPACE)
+        MACRO(pwd,           &kp P &kp W &kp D)
+        MACRO(dir_up,        &kp DOT &kp DOT &kp FSLH)
+        MACRO(cd,            &kp C &kp D &kp SPACE)
+        MACRO(vim_q,         &kp COLON &kp Q &kp EXCL)
+        MACRO(vim_x,         &kp COLON &kp X)
+        MACRO(mv,            &kp M &kp V &kp SPACE)
+        MACRO(cpr,           &kp C &kp P &kp SPACE &kp MINUS &kp R &kp SPACE)
     };
 };
 
-#define Z_SLEEP  &kp LA(LG(C_PWR))
-#define Z_SSAVE  &kp LC(LA(LS(LG(S))))
-
-#define NAV_UP   &kp LS(LA(UARW))
-#define NAV_DN   &kp LS(LA(DARW))
 #define ________ &trans
-#define BT(n)    BT_SEL n
+#define XXXXXXXX &none
 
 #define HRML(k1,k2,k3,k4) &lmt LSHFT k1  &lmt LALT k2  &lmt LCTRL k3  &lst LGUI k4
 #define HRMR(k1,k2,k3,k4) &rst  RGUI k1  &rmt RCTRL k2  &rmt RALT k3  &rmt RSHFT k4
-#define HT(k1,k2,k3,k4)   &ht LG(V) k1   &ht LG(C) k2  &ht LG(X) k3  &ht LG(Z) k4
 
-#define SYM_TAB  &lt SYM TAB
-#define SYM_ENT  &lt SYM ENTER
-#define SPC_NUM  &lt NUM SPACE
-#define NUM_BSP  &lt NUM BSPC
+// Pulgares
+#define DEL_TRM &lt TERM DEL
+#define SPC_NUM &lt NUM SPACE
+#define CMDTAB  &cmdtab IDE 0
+#define BSP_NAV &lt NAV BSPC
+#define CPS_TRK &lt TRACK CAPS
+#define ENT_SYM &lt SYM ENTER
+
+// IDE (IntelliJ Mac)
+#define I_GRADL &kp LC(Z)
+#define I_COPLT &kp LC(LS(C))
+#define I_DEVTL &kp LS(LA(T))
+#define I_FIND  &kp LG(LS(F))
+#define I_FILE  &kp LG(LS(O))
+#define I_REPL  &kp LG(LS(R))
+#define I_SELIN &kp LA(F1)
+#define I_RENAM &kp LS(F6)
+#define I_RESUM &kp LG(LA(R))
+#define I_STOP  &kp LG(F2)
+#define I_RECNT &kp LG(LS(E))
+#define I_DUP   &kp LG(D)
+#define I_JUNIT &kp LC(LS(R))
+#define I_GEN   &kp LG(N)
+#define I_RUN   &kp LC(LA(R))
+// Sistema / navegador
+#define SCR_SEL &kp LG(LS(N4))
+#define SCR_ALL &kp LG(LS(N3))
+#define B_CLOSE &kp LG(W)
+#define B_RELD  &kp LG(R)
+#define B_NTAB  &kp LG(T)
+#define APPS_MC &kp C_AC_DESKTOP_SHOW_ALL_APPLICATIONS
+// Datos personales: config/personal.dtsi está en .gitignore (repo público).
+// Si no existe (ej. GitHub Actions), esas teclas quedan vacías.
+#if __has_include("personal.dtsi")
+#include "personal.dtsi"
+#define P_MAIL  &p_mail
+#define P_USER  &p_user
+#define P_RUT   &p_rut
+#else
+#define P_MAIL  &none
+#define P_USER  &none
+#define P_RUT   &none
+#endif
 
 / {
     keymap {
         compatible = "zmk,keymap";
+
         BASE_layer {
+            display-name = "BASE";
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ TAB      │  COMMA   │  DOT     │  P       │  Y       │   │  F       │  G       │  C       │  R       │  L       │
-            &mt ESC TAB &kp COMMA  &kp DOT    &kp P      &kp Y          &kp F      &kp G      &kp C      &kp R      &kp L
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ A        │  O       │  E       │  U       │  I       │   │  D       │  H       │  T       │  N       │  S       │
-            HRML(A,        O,        E,         U)       &kp I          &kp D      HRMR(H,    T,         N,         S)
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ '        │  Q       │  J       │  K       │  X       │   │  B       │  M       │  W       │  V       │   Z      │
-            &kp SQT    &kp Q      &kp J      &kp K      &kp X          &kp B      &kp M      &kp W      &kp V       &kp Z
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                            &lt FNC DEL  SPC_NUM        SYM_ENT    &lt CMK BSPC
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            &mt ESC TAB &kp COMMA &kp DOT   &kp P     &kp Y          &kp F     &kp G     &kp C     &kp R     &kp L
+            HRML(A,        O,        E,         U)    &kp I          &kp D     HRMR(H,    T,        N,        S)
+            &kp SQT     &kp Q     &kp J     &kp K     &kp X          &kp B     &kp M     &kp W     &kp V     &kp Z
+                                            DEL_TRM   SPC_NUM        ENT_SYM   BSP_NAV
             >;
         };
-        CMK_layer {
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │          │          │          │          │   │          │          │          │          │          │
-            &mkdir      &rm_rf      &grep     &touch      &ls         &search   &search_c   &kp UARW &select_opened_file &kp BSPC
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CD       │  DIR     │   PWD    │          │          │   │          │          │          │          │          │
-            &cd         &dir_up     &pwd      &cat       &tail_n       &refactor  &kp LARW    &kp DARW   &kp RARW  &recent_files
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ ~        │  |       │          │          │          │   │          │          │          │          │          │
-            &kp TILDE   &kp PIPE    &none     &vim_s     &vim_q        &duplicate &junit_all &generate_code &stop  &resume_debug  
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                              &cpr       &mv           &none      &none
-        // 
-            >;
-        };
+
         NUM_layer {
+            display-name = "NUM";
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ 1        │  3       │  5       │  7       │ 9        │   │          │          │          │          │          │
-            &kp N1      &kp N3     &kp N5     &kp N7    &kp N9        &gradle     &none    &null_blank &none     &class_hierarchy
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ 2        │  4       │  6       │  8       │ 0        │   │          │          │          │          │          │
-            &kp N2      &kp N4     &kp N6     &kp N8    &kp N0        &bookmarks  &cmd_lb    &none      &cmd_rb   &show_usages
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ ALL      │  COPY    │  CUP     │ BACK     │ PASTE    |   │          │          │          │          │          │
-            &kp LG(A)   &kp LG(C)  &kp LG(X) &kp LG(Z)  &kp LG(V)     &copilot_chat &p_view  &none     &none     &generate_code
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &none       &none       &debug_continue &debu_resumen
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯  
+            &kp N1      &kp N3    &kp N5    &kp N7    &kp N9         XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+            &kp N2      &kp N4    &kp N6    &kp N8    &kp N0         XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+            &kp LG(A)   &kp LG(C) &kp LG(X) &kp LG(Z) &kp LG(V)      XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+                                            XXXXXXXX  ________       CMDTAB    XXXXXXXX
             >;
         };
+
         SYM_layer {
+            display-name = "SYM";
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ CLONE    │ CHECKOUT │ BRANCH   │  DIFF    │ DIFF -S  │   │ $        │ &        │  {       │  }       │ @        │
-         &git_clone &git_checkout &git_branch &git_diff &git_diff_s    &kp DLLR   &kp AMPS   &kp LBRC   &kp RBRC   &kp AT
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ STATUS   │ ADD      │ COMMIT   │  PUSH    │  LOG     │   │ #        │ -        │  (       │  )       │  _       │
-           &git_status &git_add  &git_commit  &git_push  &git_log      &kp HASH   &kp MINUS   &kp LPAR   &kp RPAR   &kp UNDERSCORE
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ PULL     │ STASH    │ ST-LIST  │ ST-APPLY │ ST-GRAPH │   │ !        │ ?        │  [       │  ]       │  /       │
-          &git_pull   &git_s    &git_s_list &git_s_apply &git_graph    &kp EXCL   &kp QMARK   &kp LBKT   &kp RBKT   &kp FSLH 
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                         &git_stsh  &git_show_diff     &none    &git_s_branch
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            &kp SEMI    &kp COLON &kp CARET SCR_SEL   SCR_ALL        &kp DLLR  &kp AMPS  &kp LBRC  &kp RBRC  &kp AT
+            &kp EQUAL   &kp LT    &kp GT    &kp FSLH  &kp BSLH       &kp HASH  &kp MINUS &kp LPAR  &kp RPAR  &kp UNDER
+            &kp GRAVE   &kp PLUS  &kp MINUS &kp PRCNT &kp ASTRK      &kp EXCL  &kp QMARK &kp LBKT  &kp RBKT  &kp FSLH
+                                            XXXXXXXX  CPS_TRK        ________  XXXXXXXX
             >;
         };
-        FNC_layer {
+
+        TERM_layer {
+            display-name = "TERM";
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│    ;     │    :     │    ^     │                     │   │          │          │          │          │          │
-            &kp SEMI  &kp COLON   &kp CARET  &screan_s &screan        &kp K_VOL_UP &bt BT_SEL 0  &none     &none      &none 
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //| =        | <        │ >        │  /       │ \        │   │          │          │          │          │          |
-           &kp EQUAL   &kp LT     &kp GT     &kp FSLH  &kp BSLH       &kp K_MUTE  &bt BT_SEL 1 &none     &none      &none 
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ `        │  +       │  -       │  %       │  *       │   │          │          │          │          │          │
-           &kp GRAVE   &kp PLUS   &kp MINUS  &kp PRCNT   &kp ASTRK   &kp K_VOL_DN   &none      &none     &none      &none
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             ________   ________       &kp LG(TAB) &kp CAPSLOCK
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            &git_clone  &git_checkout &git_branch &git_diff &git_diff_s     &ls      &touch   &grep   &rm_rf   &mkdir
+            &git_status &git_add  &git_commit &git_push &git_log         &tail_n  &cat     &pwd    &dir_up  &cd
+            &git_pull   &git_s    &git_s_list &git_s_apply &git_graph    &vim_q   &vim_x   &mv     &kp PIPE &kp TILDE
+                                            XXXXXXXX  &git_s_show    XXXXXXXX  XXXXXXXX
+            >;
+        };
+
+        NAV_layer {
+            display-name = "NAV";
+            bindings = <
+            &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 XXXXXXXX XXXXXXXX  &kp C_VOL_UP XXXXXXXX &kp UP  XXXXXXXX  P_MAIL
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX       &kp C_MUTE &kp LEFT &kp DOWN &kp RIGHT P_USER
+            &bt BT_CLR  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX       &kp C_VOL_DN XXXXXXXX XXXXXXXX XXXXXXXX P_RUT
+                                            XXXXXXXX  XXXXXXXX       XXXXXXXX  ________
+            >;
+        };
+
+        TRACK_layer {
+            display-name = "TRACK";
+            bindings = <
+            XXXXXXXX    XXXXXXXX  B_CLOSE   B_RELD    B_NTAB         XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  &mkp LCLK &mkp RCLK      XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS APPS_MC        XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX  XXXXXXXX
+                                            XXXXXXXX  ________       ________  XXXXXXXX
+            >;
+        };
+
+        IDE_layer {
+            display-name = "IDE";
+            bindings = <
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  XXXXXXXX  I_GRADL        I_FIND    I_FILE    I_REPL    I_SELIN   XXXXXXXX
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  XXXXXXXX  I_COPLT        I_RENAM   &kp F8    I_RESUM   I_STOP    I_RECNT
+            XXXXXXXX    XXXXXXXX  XXXXXXXX  XXXXXXXX  I_DEVTL        I_DUP     I_JUNIT   I_GEN     XXXXXXXX  I_RUN
+                                            XXXXXXXX  ________       ________  XXXXXXXX
             >;
         };
     };

@@ -31,147 +31,217 @@ layers:
   - W
   - V
   - Z
-  - {t: ⌦, h: FNC}
+  - {t: ⌦, h: TERM}
   - {t: ␣, h: NUM}
   - {t: ENTER, h: SYM}
-  - {t: '$$mdi:backspace-outline$$', h: CMK}
-  CMK:
-  - '&mkdir'
-  - '&rm_rf'
-  - '&grep'
-  - '&touch'
-  - '&ls'
-  - '&search'
-  - '&search_c'
-  - UARW
-  - '&select_opened_file'
-  - $$mdi:backspace-outline$$
-  - '&cd'
-  - '&dir_up'
-  - '&pwd'
-  - '&cat'
-  - '&tail_n'
-  - '&refactor'
-  - LARW
-  - DARW
-  - RARW
-  - '&recent_files'
-  - '~'
-  - '|'
-  - ''
-  - '&vim_s'
-  - '&vim_q'
-  - '&duplicate'
-  - '&junit_all'
-  - '&generate_code'
-  - '&stop'
-  - '&resume_debug'
-  - '&cpr'
-  - '&mv'
-  - ''
-  - {type: held}
+  - {t: '$$mdi:backspace-outline$$', h: NAV}
   NUM:
   - '1'
   - '3'
   - '5'
   - '7'
   - '9'
-  - '&gradle'
   - ''
-  - '&null_blank'
   - ''
-  - '&class_hierarchy'
+  - ''
+  - ''
+  - ''
   - '2'
   - '4'
   - '6'
   - '8'
   - '0'
-  - '&bookmarks'
-  - '&cmd_lb'
   - ''
-  - '&cmd_rb'
-  - '&show_usages'
+  - ''
+  - ''
+  - ''
+  - ''
   - Gui+A
   - Gui+C
   - Gui+X
   - Gui+Z
   - Gui+V
-  - '&copilot_chat'
-  - '&p_view'
   - ''
   - ''
-  - '&generate_code'
+  - ''
+  - ''
+  - ''
   - ''
   - {type: held}
-  - '&debug_continue'
-  - '&debu_resumen'
+  - {t: '&swap', h: IDE}
+  - ''
   SYM:
-  - '&git_clone'
-  - '&git_checkout'
-  - '&git_branch'
-  - '&git_diff'
-  - '&git_diff_s'
+  - ;
+  - ':'
+  - ^
+  - Gui+Sft+4
+  - Gui+Sft+3
   - $
   - AMPS
   - '{'
   - '}'
   - '@'
-  - '&git_status'
-  - '&git_add'
-  - '&git_commit'
-  - '&git_push'
-  - '&git_log'
-  - '#'
-  - '-'
-  - (
-  - )
-  - _
-  - '&git_pull'
-  - '&git_s'
-  - '&git_s_list'
-  - '&git_s_apply'
-  - '&git_graph'
-  - '!'
-  - '?'
-  - '['
-  - ']'
-  - /
-  - '&git_stsh'
-  - '&git_show_diff'
-  - {type: held}
-  - '&git_s_branch'
-  FNC:
-  - ;
-  - ':'
-  - ^
-  - '&screan_s'
-  - '&screan'
-  - VOL UP
-  - BT 1
-  - ''
-  - ''
-  - ''
   - '='
   - <
   - '>'
   - /
   - \
-  - MUTE
-  - BT 2
-  - ''
-  - ''
-  - ''
+  - '#'
+  - '-'
+  - (
+  - )
+  - _
   - '`'
   - +
   - '-'
   - '%'
   - '*'
-  - VOL DN
+  - '!'
+  - '?'
+  - '['
+  - ']'
+  - /
+  - ''
+  - {t: Caps Lock, h: TRACK}
+  - {type: held}
+  - ''
+  TERM:
+  - '&git_clone'
+  - '&git_checkout'
+  - '&git_branch'
+  - '&git_diff'
+  - '&git_diff_s'
+  - '&ls'
+  - '&touch'
+  - '&grep'
+  - '&rm_rf'
+  - '&mkdir'
+  - '&git_status'
+  - '&git_add'
+  - '&git_commit'
+  - '&git_push'
+  - '&git_log'
+  - '&tail_n'
+  - '&cat'
+  - '&pwd'
+  - '&dir_up'
+  - '&cd'
+  - '&git_pull'
+  - '&git_s'
+  - '&git_s_list'
+  - '&git_s_apply'
+  - '&git_graph'
+  - '&vim_q'
+  - '&vim_x'
+  - '&mv'
+  - '|'
+  - '~'
+  - {type: held}
+  - '&git_s_show'
+  - ''
+  - ''
+  NAV:
+  - BT 1
+  - BT 2
+  - BT 3
+  - ''
+  - ''
+  - Vol Up
+  - ''
+  - ↑
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - MUTE
+  - ←
+  - ↓
+  - →
+  - ''
+  - BT CLR
+  - ''
+  - ''
+  - ''
+  - ''
+  - Vol Down
+  - ''
+  - ''
+  - ''
   - ''
   - ''
   - ''
   - ''
   - {type: held}
-  - {t: ▽, type: trans}
-  - Gui+↹
-  - CAPSLOCK
+  TRACK:
+  - ''
+  - ''
+  - Gui+W
+  - Gui+R
+  - Gui+T
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - '&mkp LCLK'
+  - '&mkp RCLK'
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - AC DESKTOP SHOW ALL WINDOWS
+  - AC DESKTOP SHOW ALL APPLICATIONS
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - {type: held}
+  - {type: held}
+  - ''
+  IDE:
+  - ''
+  - ''
+  - ''
+  - ''
+  - Ctl+Z
+  - Gui+Sft+F
+  - Gui+Sft+O
+  - Gui+Sft+R
+  - Alt+F1
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - Ctl+Sft+C
+  - Sft+F6
+  - F8
+  - Gui+Alt+R
+  - Gui+F2
+  - Gui+Sft+E
+  - ''
+  - ''
+  - ''
+  - ''
+  - Sft+Alt+T
+  - Gui+D
+  - Ctl+Sft+R
+  - Gui+N
+  - ''
+  - Ctl+Alt+R
+  - ''
+  - {type: held}
+  - {type: held}
+  - ''
